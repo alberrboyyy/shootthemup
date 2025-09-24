@@ -8,7 +8,6 @@ namespace Drones
     {
         public static readonly int WIDTH = 1200;        // Dimensions of the airspace
         public static readonly int HEIGHT = 600;
-        private System.Windows.Forms.Timer movementTimer;
         private int _direction = 0;
 
         public int Direction { get { return _direction; } set { _direction = value; } }
@@ -33,13 +32,11 @@ namespace Drones
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
+            
             this.players = players;
 
 
 
-            movementTimer = new System.Windows.Forms.Timer();
-            movementTimer.Interval = 1;
-            movementTimer.Tick += MovementTimer_Tick;
         }
     
 
@@ -53,6 +50,7 @@ namespace Drones
             {
                 player.Render(airspace);
             }
+
 
             airspace.Render();
         }
@@ -69,6 +67,11 @@ namespace Drones
         // Méthode appelée à chaque frame
         private void NewFrame(object sender, EventArgs e)
         {
+            if (_direction != 0)
+            {
+                players[0].X += _direction;
+            }
+
             this.Update(ticker.Interval);
             this.Render();
         }
@@ -77,12 +80,10 @@ namespace Drones
             switch (e.KeyCode)
             {
                 case Keys.H:
-                    _direction = -5;
-                    movementTimer.Start();
+                    _direction = -2;
                     break;
                 case Keys.L:
-                    _direction = 5;
-                    movementTimer.Start();
+                    _direction = 2;
                     break;
                 case Keys.Q:
                 case Keys.Escape:
@@ -97,17 +98,11 @@ namespace Drones
                 case Keys.H:
                 case Keys.L:
                     _direction = 0;
-                    movementTimer.Stop();
                     break;
             }
         }
-        private void MovementTimer_Tick(object sender, EventArgs e)
+        private void MovementTimerTick(object sender, EventArgs e)
         {
-            if (_direction != 0)
-            {
-                players[0].X += _direction;
-                this.Render();
-            }
         }
     }
 }

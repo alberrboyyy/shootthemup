@@ -35,6 +35,7 @@
             // ticker
             // 
             this.ticker.Enabled = true;
+            this.ticker.Interval = 50;
             this.ticker.Tick += new System.EventHandler(this.NewFrame);
             // 
             // AirSpace

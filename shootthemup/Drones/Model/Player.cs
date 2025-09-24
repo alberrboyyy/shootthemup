@@ -13,7 +13,7 @@
         public Player(int x, int y, string name, int health)
         {
             _x = x;
-            _y = y;
+            _y = AirSpace.HEIGHT - 100;
             _name = name;
             _health = health;
         }
