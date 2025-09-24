@@ -20,3 +20,11 @@
 - Le journal de travail ne contient aucune entrée pour aujourd'hui
 - Prise d'une pause exceptionnelle de 20 minutes
 - De mon point de vue, vous n'avez strictement rien fait des 4 périodes de l'après-midi
+
+### 18.9
+
+- Aucun commit n'a été fait mercredi
+- Votre journal de travail n'est pas à jour
+- Le critère d'évaluation "processus de travail" est en danger pour vous. Encore un raté et ce critère sera définitivement évalué comme insuffisant.
+- Le code ne compile pas
+- Vous prenez de nombreuses pauses durant les périodes de projet. Cela ne me semble pas judicieux étant donné l'état d'avancement de votre projet.
