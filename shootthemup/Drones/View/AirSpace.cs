@@ -8,30 +8,40 @@ namespace Drones
     {
         public static readonly int WIDTH = 1200;        // Dimensions of the airspace
         public static readonly int HEIGHT = 600;
+        private System.Windows.Forms.Timer movementTimer;
+        private int _direction = 0;
+
+        public int Direction { get { return _direction; } set { _direction = value; } }
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
-        private List<Player> crew;
+        private List<Player> players;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Player> crew)
+        public AirSpace(List<Player> players)
         {
             InitializeComponent();
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
 
-            this.KeyPreview = true; // Ensures the form captures key events before child controls
-            this.KeyDown += KeyInfo;
+            this.KeyPreview = true;
+            this.KeyDown += AirspaceKeyDown;
+            this.KeyUp += AirSpaceKeyUp;
 
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
-            this.crew = crew;
+            this.players = players;
 
 
+
+            movementTimer = new System.Windows.Forms.Timer();
+            movementTimer.Interval = 1;
+            movementTimer.Tick += MovementTimer_Tick;
         }
+    
 
         // Affichage de la situation actuelle
         private void Render()
@@ -39,7 +49,7 @@ namespace Drones
             airspace.Graphics.Clear(Color.AliceBlue);
 
             // draw drones
-            foreach (Player player in crew)
+            foreach (Player player in players)
             {
                 player.Render(airspace);
             }
@@ -50,7 +60,7 @@ namespace Drones
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
         {
-            foreach (Player player in crew)
+            foreach (Player player in players)
             {
                 player.Update(interval);
             }
@@ -62,18 +72,41 @@ namespace Drones
             this.Update(ticker.Interval);
             this.Render();
         }
-        private void KeyInfo(object sender, KeyEventArgs e)
+        private void AirspaceKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.H:
-                    Console.WriteLine("H key pressed");
-                    crew[0].X--;
+                    _direction = -5;
+                    movementTimer.Start();
                     break;
                 case Keys.L:
-                    Console.WriteLine("L key pressed");
-                    crew[0].X++;
+                    _direction = 5;
+                    movementTimer.Start();
                     break;
+                case Keys.Q:
+                case Keys.Escape:
+                    Environment.Exit(0);
+                    break;
+            }
+        }
+        private void AirSpaceKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.H:
+                case Keys.L:
+                    _direction = 0;
+                    movementTimer.Stop();
+                    break;
+            }
+        }
+        private void MovementTimer_Tick(object sender, EventArgs e)
+        {
+            if (_direction != 0)
+            {
+                players[0].X += _direction;
+                this.Render();
             }
         }
     }
