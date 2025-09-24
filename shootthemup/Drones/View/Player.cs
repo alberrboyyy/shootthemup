@@ -6,7 +6,7 @@ namespace Drones
 {
     // Cette partie de la classe Drone définit comment on peut voir un drone
 
-    public partial class Drone
+    public partial class Player
     {
         private Pen droneBrush = new Pen(new SolidBrush(Color.Purple), 3);
 
@@ -20,7 +20,7 @@ namespace Drones
         // De manière textuelle
         public override string ToString()
         {
-            return $"{Name} ({((int)((double)_charge / FULLCHARGE * 100)).ToString()}%)";
+            return $"{Name} ({((int)((double)Health)).ToString()})";
         }
 
     }

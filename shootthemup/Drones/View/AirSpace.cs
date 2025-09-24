@@ -10,33 +10,38 @@ namespace Drones
         public static readonly int HEIGHT = 600;
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
-        private List<Drone> fleet;
+        private List<Player> crew;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Drone> fleet)
+        public AirSpace(List<Player> crew)
         {
             InitializeComponent();
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
+
+            this.KeyPreview = true; // Ensures the form captures key events before child controls
+            this.KeyDown += KeyInfo;
+
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
-            this.fleet = fleet;
+            this.crew = crew;
+
+
         }
 
         // Affichage de la situation actuelle
         private void Render()
         {
-            Color darken = Color.FromArgb(255, Color.Black);
             airspace.Graphics.Clear(Color.AliceBlue);
 
             // draw drones
-            foreach (Drone drone in fleet)
+            foreach (Player player in crew)
             {
-                drone.Render(airspace);
+                player.Render(airspace);
             }
 
             airspace.Render();
@@ -45,9 +50,9 @@ namespace Drones
         // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
         {
-            foreach (Drone drone in fleet)
+            foreach (Player player in crew)
             {
-                drone.Update(interval);
+                player.Update(interval);
             }
         }
 
@@ -56,6 +61,20 @@ namespace Drones
         {
             this.Update(ticker.Interval);
             this.Render();
+        }
+        private void KeyInfo(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.H:
+                    Console.WriteLine("H key pressed");
+                    crew[0].X--;
+                    break;
+                case Keys.L:
+                    Console.WriteLine("L key pressed");
+                    crew[0].X++;
+                    break;
+            }
         }
     }
 }
