@@ -14,41 +14,44 @@ namespace Drones
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
         private List<Player> players;
+        private List<Enemy> enemies;
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
         // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Player> players)
+        public AirSpace(List<Player> players, List<Enemy> enemies)
         {
             InitializeComponent();
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
 
-            this.KeyPreview = true;
-            this.KeyDown += AirspaceKeyDown;
-            this.KeyUp += AirSpaceKeyUp;
+            KeyPreview = true;
+            KeyDown += AirspaceKeyDown;
+            KeyUp += AirSpaceKeyUp;
 
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
-            
+
             this.players = players;
-
-
-
+            this.enemies = enemies;
         }
-    
+
 
         // Affichage de la situation actuelle
         private void Render()
         {
-            airspace.Graphics.Clear(Color.AliceBlue);
+            airspace.Graphics.Clear(Color.White);
 
             // draw drones
             foreach (Player player in players)
             {
                 player.Render(airspace);
+            }
+            foreach (Enemy enemy in enemies)
+            {
+                enemy.Render(airspace);
             }
 
 
@@ -62,6 +65,10 @@ namespace Drones
             {
                 player.Update(interval);
             }
+            foreach (Enemy enemies in enemies)
+            {
+                enemies.Update(interval);
+            }
         }
 
         // Méthode appelée à chaque frame
@@ -72,8 +79,8 @@ namespace Drones
                 players[0].X += _direction;
             }
 
-            this.Update(ticker.Interval);
-            this.Render();
+            Update(ticker.Interval);
+            Render();
         }
         private void AirspaceKeyDown(object sender, KeyEventArgs e)
         {
@@ -100,9 +107,6 @@ namespace Drones
                     _direction = 0;
                     break;
             }
-        }
-        private void MovementTimerTick(object sender, EventArgs e)
-        {
         }
     }
 }

@@ -13,11 +13,17 @@ namespace Drones
             ApplicationConfiguration.Initialize();
 
             // Création de la flotte de drones
-            List<Player> players= new List<Player>();
-            players.Add(new Player(100, 100, "Joe",1));
+            List<Player> players = new List<Player>();
+            players.Add(new Player(100, "Joe", 1));
+
+
+            List<Enemy> enemies = new List<Enemy>();
+            enemies.Add(new Enemy(100, 200, "Joe", 1));
+            enemies.Add(new Enemy(100, 200 - AirSpace.HEIGHT, "ouais", 1));
+
 
             // Démarrage
-            Application.Run(new AirSpace(players));
+            Application.Run(new AirSpace(players, enemies));
         }
     }
 }

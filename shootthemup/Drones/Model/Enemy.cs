@@ -1,18 +1,18 @@
 ﻿namespace Drones
 {
-    public partial class Player
+    public partial class Enemy
     {
         public static readonly int _MaxHealth = 3;      // Charge maximale de la batterie
         private int _health;                            // La charge actuelle de la batterie
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
-
+        
         // Constructeur
-        public Player(int x, string name, int health)
+        public Enemy(int x, int y, string name, int health)
         {
             _x = x;
-            _y = AirSpace.HEIGHT - 100;
+            _y = y;
             _name = name;
             _health = health;
         }
@@ -27,8 +27,7 @@
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval)
         {
-
+            Y++;
         }
-
     }
 }
