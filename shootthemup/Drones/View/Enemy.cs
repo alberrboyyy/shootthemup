@@ -10,6 +10,7 @@ namespace Drones
             //drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, X + 5, Y - 25);
 
             drawingSpace.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(X, Y, 200, 200));
+            drawingSpace.Graphics.DrawRectangle(new Pen(Color.Black, 3), new Rectangle(X - 100, Y - 100, 200, 200));
 
             /* WOP
             double xMin = -10.0;

@@ -28,6 +28,8 @@
         public void Update(int interval)
         {
             Y++;
+            X++;
+
         }
     }
 }

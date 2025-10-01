@@ -19,7 +19,6 @@ namespace Drones
 
             List<Enemy> enemies = new List<Enemy>();
             enemies.Add(new Enemy(100, 200, "Joe", 1));
-            enemies.Add(new Enemy(100, 200 - AirSpace.HEIGHT, "ouais", 1));
 
 
             // Démarrage
