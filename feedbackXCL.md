@@ -28,3 +28,8 @@
 - Le critère d'évaluation "processus de travail" est en danger pour vous. Encore un raté et ce critère sera définitivement évalué comme insuffisant.
 - Le code ne compile pas
 - Vous prenez de nombreuses pauses durant les périodes de projet. Cela ne me semble pas judicieux étant donné l'état d'avancement de votre projet.
+
+### 7.10
+
+- Votre journal ne fait mention que d'une heure de travail. Est-ce conforme à la réalité ?
+- Ne commencez pas une nouvelle US (mouvement des ennemis) tant que vous n'avez pas terminé la précédente (joueur)
