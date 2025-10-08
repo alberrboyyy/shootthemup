@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Drones
 {
     // La classe AirSpace représente le territoire au dessus duquel les drones peuvent voler
@@ -8,9 +10,9 @@ namespace Drones
     {
         public static readonly int WIDTH = 1200;        // Dimensions of the airspace
         public static readonly int HEIGHT = 600;
-        private int _direction = 0;
+        //private int _direction = 0;
 
-        public int Direction { get { return _direction; } set { _direction = value; } }
+        //public int Direction { get { return _direction; } set { _direction = value; } }
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
         private List<Player> players;
@@ -26,9 +28,11 @@ namespace Drones
             // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
 
+            
             KeyPreview = true;
             KeyDown += AirspaceKeyDown;
             KeyUp += AirSpaceKeyUp;
+            
 
             // Creates a BufferedGraphics instance associated with this form, and with
             // dimensions the same size as the drawing surface of the form.
@@ -63,7 +67,7 @@ namespace Drones
         {
             foreach (Player player in players)
             {
-                player.Update(interval);
+                player.Update(interval, players);
             }
             foreach (Enemy enemies in enemies)
             {
@@ -74,23 +78,19 @@ namespace Drones
         // Méthode appelée à chaque frame
         private void NewFrame(object sender, EventArgs e)
         {
-            if (_direction != 0)
-            {
-                players[0].X += _direction;
-            }
-
             Update(ticker.Interval);
             Render();
         }
+        
         private void AirspaceKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.H:
-                    _direction = -2;
+                    players[0].Direction = -2;
                     break;
                 case Keys.L:
-                    _direction = 2;
+                    players[0].Direction = 2;
                     break;
                 case Keys.Q:
                 case Keys.Escape:
@@ -104,7 +104,7 @@ namespace Drones
             {
                 case Keys.H:
                 case Keys.L:
-                    _direction = 0;
+                    players[0].Direction = 0;
                     break;
             }
         }

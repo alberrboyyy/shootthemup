@@ -7,6 +7,8 @@
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
+        private int _direction = 1;
+
 
         // Constructeur
         public Player(int x, string name, int health)
@@ -21,14 +23,21 @@
         public string Name { get { return _name; } set { _name = value; } }
         public int X { get { return _x; } set { _x = value; } }
         public int Y { get { return _y; } set { _y = value; } }
+        public int Direction { get { return _direction; } set { _direction = value; } }
+
+
+
+
 
 
         // Cette méthode calcule le nouvel état dans lequel le drone se trouve après
         // que 'interval' millisecondes se sont écoulées
-        public void Update(int interval)
+        public void Update(int interval, List<Player> players)
         {
-
+            if (_direction != 0)
+            {
+                players[0].X += _direction;
+            }
         }
-
     }
 }
