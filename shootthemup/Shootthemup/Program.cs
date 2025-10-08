@@ -1,4 +1,4 @@
-namespace Shootthemup
+namespace Shootthemup //Program.cs
 {
     internal static class Program
     {
@@ -19,6 +19,7 @@ namespace Shootthemup
 
             List<Enemy> enemies = new List<Enemy>();
             enemies.Add(new Enemy(100, 200, "Joe", 1));
+            enemies.Add(new Enemy(200, 200, "Joe", 1));
 
 
             // Démarrage

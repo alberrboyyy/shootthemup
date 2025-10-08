@@ -1,13 +1,13 @@
-﻿namespace Shootthemup
+﻿namespace Shootthemup //Model.Player.cs
 {
     public partial class Player
     {
-        public static readonly int _MaxHealth = 3;      // Charge maximale de la batterie
+        public static readonly int MaxHealth = 3;      // Charge maximale de la batterie
         private int _health;                            // La charge actuelle de la batterie
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
-        private int _direction = 1;
+        private int _direction = 0;
 
 
         // Constructeur
@@ -34,20 +34,17 @@
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval, List<Player> players)
         {
-            foreach (Player player in players)
+            if (_direction != 0)
             {
-                if (_direction != 0)
-                {
-                    player.X += _direction;
-                }
-                if (player.X >= AirSpace.WIDTH)
-                {
-                    player.X = 0;
-                }
-                else if (player.X <= 0)
-                {
-                    player.X = AirSpace.WIDTH;
-                }
+                this.X += _direction;
+            }
+            if (this.X >= AirSpace.WIDTH)
+            {
+                this.X = 0;
+            }
+            else if (this.X <= 0)
+            {
+                this.X = AirSpace.WIDTH;
             }
         }
     }

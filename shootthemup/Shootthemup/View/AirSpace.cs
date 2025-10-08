@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Shootthemup
 {
     // La classe AirSpace représente le territoire au dessus duquel les drones peuvent voler
@@ -66,9 +64,9 @@ namespace Shootthemup
             {
                 player.Update(interval, players);
             }
-            foreach (Enemy enemies in enemies)
+            foreach (Enemy enemy in enemies)
             {
-                enemies.Update(interval);
+                enemy.Update(interval, enemies);
             }
         }
 

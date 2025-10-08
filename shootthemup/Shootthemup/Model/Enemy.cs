@@ -1,8 +1,8 @@
-﻿namespace Shootthemup
+﻿namespace Shootthemup //Model.Enemy.cs
 {
     public partial class Enemy
     {
-        public static readonly int _MaxHealth = 3;      // Charge maximale de la batterie
+        public static readonly int MaxHealth = 3;      // Charge maximale de la batterie
         private int _health;                            // La charge actuelle de la batterie
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
@@ -25,10 +25,13 @@
 
         // Cette méthode calcule le nouvel état dans lequel le drone se trouve après
         // que 'interval' millisecondes se sont écoulées
-        public void Update(int interval)
+        public void Update(int interval, List<Enemy> enemies)
         {
-            Y++;
-            X++;
+            if (this.Y >= AirSpace.HEIGHT)
+            {
+                this.Y = 0;
+            }
+            this.Y++;
 
         }
     }
