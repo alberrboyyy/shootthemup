@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Drones
+namespace Shootthemup
 {
     internal static class GlobalHelpers
     {

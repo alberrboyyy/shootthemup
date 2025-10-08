@@ -1,4 +1,4 @@
-namespace Drones
+namespace Shootthemup
 {
     internal static class Program
     {

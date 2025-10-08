@@ -1,6 +1,6 @@
-﻿using Drones.Properties;
+﻿using Shootthemup.Properties;
 
-namespace Drones
+namespace Shootthemup
 {
     public partial class Enemy
     {

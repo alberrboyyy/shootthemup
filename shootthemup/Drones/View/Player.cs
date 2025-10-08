@@ -1,6 +1,6 @@
-﻿using Drones.Properties;
+﻿using Shootthemup.Properties;
 
-namespace Drones
+namespace Shootthemup
 {
     // Cette partie de la classe Drone définit comment on peut voir un drone
 

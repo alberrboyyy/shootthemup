@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Drones
+namespace Shootthemup
 {
     // La classe AirSpace représente le territoire au dessus duquel les drones peuvent voler
     // Il s'agit d'un formulaire (une fenêtre) qui montre une vue 2D depuis en dessus
@@ -10,9 +10,6 @@ namespace Drones
     {
         public static readonly int WIDTH = 1200;        // Dimensions of the airspace
         public static readonly int HEIGHT = 600;
-        //private int _direction = 0;
-
-        //public int Direction { get { return _direction; } set { _direction = value; } }
 
         // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
         private List<Player> players;
