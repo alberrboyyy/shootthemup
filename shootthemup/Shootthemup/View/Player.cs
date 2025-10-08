@@ -9,7 +9,7 @@ namespace Shootthemup
         // De manière graphique
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(Resources.drone, X, Y, 50, 50);
+            drawingSpace.Graphics.DrawImage(Resources.player, X, Y);
             //drawingSpace.Graphics.DrawString($"{this}", TextHelpers.drawFont, TextHelpers.writingBrush, X + 5, Y - 25);
         }
 

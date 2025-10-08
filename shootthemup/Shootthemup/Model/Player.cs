@@ -34,9 +34,20 @@
         // que 'interval' millisecondes se sont écoulées
         public void Update(int interval, List<Player> players)
         {
-            if (_direction != 0)
+            foreach (Player player in players)
             {
-                players[0].X += _direction;
+                if (_direction != 0)
+                {
+                    player.X += _direction;
+                }
+                if (player.X >= AirSpace.WIDTH)
+                {
+                    player.X = 0;
+                }
+                else if (player.X <= 0)
+                {
+                    player.X = AirSpace.WIDTH;
+                }
             }
         }
     }

@@ -14,7 +14,7 @@ namespace Shootthemup
 
             // Création de la flotte de drones
             List<Player> players = new List<Player>();
-            players.Add(new Player(100, "Joe", 1));
+            players.Add(new Player(1, "Joe", 1));
 
 
             List<Enemy> enemies = new List<Enemy>();
