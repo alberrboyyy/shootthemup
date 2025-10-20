@@ -33,3 +33,28 @@
 
 - Votre journal ne fait mention que d'une heure de travail. Est-ce conforme à la réalité ?
 - Ne commencez pas une nouvelle US (mouvement des ennemis) tant que vous n'avez pas terminé la précédente (joueur)
+
+## 80%
+
+Les valeurs possibles du résultat sont: LA (Largement Acquis), A (Acquis), I (Insuffisant), NA (non acquis)
+
+| Critère                    | Résultat | Commentaire |
+| -------------------------- | -------- | ----------- |
+| Avancement Obstacles       |          |             |
+| Avancement Joueur          |          |             |
+| Avancement Tirs            |          |             |
+| Avancement ennemis         |          |             |
+| Avancement score           |          |             |
+| Qualité Présentation       |          |             |
+| Qualité Commentaires       |          |             |
+| Qualité Conventions        |          |             |
+| POO                        |          |             |
+| Processus Journal          |          |             |
+| Processus Git              |          |             |
+| Processus Livraison        |          |             |
+| Expression User Stories    |          |             |
+| Expression Rapport Fome    |          |             |
+| Expression Rapport Contenu |          |             |
+| Ecologie (gitignore)       |          |             |
+| Comportement collectif     |          |             |
+| Comportement individuel    |          |             |
