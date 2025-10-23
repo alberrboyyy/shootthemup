@@ -2,11 +2,12 @@
 {
     public partial class Enemy
     {
-        public static readonly int MaxHealth = 3;      // Charge maximale de la batterie
+        public static readonly int MaxHealth = 3;       // Charge maximale de la batterie
         private int _health;                            // La charge actuelle de la batterie
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
+        private int _shootCooldown;                     // shoot cooldown (ms)          
         
         // Constructeur
         public Enemy(int x, int y, string name, int health)
@@ -15,6 +16,8 @@
             _y = y;
             _name = name;
             _health = health;
+
+            _shootCooldown = GlobalHelpers.alea.Next(500, 2000);
         }
 
         public int Health { get { return _health; } set { _health = value; } }
@@ -22,9 +25,6 @@
         public int X { get { return _x; } set { _x = value; } }
         public int Y { get { return _y; } set { _y = value; } }
 
-
-        // Cette méthode calcule le nouvel état dans lequel le drone se trouve après
-        // que 'interval' millisecondes se sont écoulées
         public void Update(int interval, List<Enemy> enemies)
         {
             if (this.Y >= AirSpace.HEIGHT)
@@ -32,7 +32,26 @@
                 this.Y = 0;
             }
             this.Y++;
+        }
 
+        public Projectile TryShoot(int interval)
+        {
+            _shootCooldown -= interval;
+            if (_shootCooldown <= 0)
+            {
+                _shootCooldown = 1000 + GlobalHelpers.alea.Next(0, 1000);
+
+                const int enemyWidthHalf = 16;
+                const int enemyHeight = 32;
+                const int projectileWidthHalf = 3;
+
+                int projX = this.X + enemyWidthHalf - projectileWidthHalf;
+                int projY = this.Y + enemyHeight;
+
+                // damage=1, speed=3 (positive -> down), projectileType=1
+                return new Projectile(projX, projY, 1, 3, 1);
+            }
+            return null;
         }
     }
 }

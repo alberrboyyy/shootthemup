@@ -1,63 +1,64 @@
 namespace Shootthemup
 {
-    // La classe AirSpace représente le territoire au dessus duquel les drones peuvent voler
-    // Il s'agit d'un formulaire (une fenêtre) qui montre une vue 2D depuis en dessus
-    // Il n'y a donc pas de notion d'altitude qui intervient
-
     public partial class AirSpace : Form
     {
-        public static readonly int WIDTH = 1200;        // Dimensions of the airspace
+        public static readonly int WIDTH = 1200;
         public static readonly int HEIGHT = 600;
 
-        // La flotte est l'ensemble des drones qui évoluent dans notre espace aérien
-        private List<Player> players;
-        private List<Enemy> enemies;
+        List<Player> players = new List<Player>
+            {
+                new Player(1, "Joe", 1)
+            };
 
+
+        List<Enemy> enemies = new List<Enemy>
+            {
+                new Enemy(100, 200, "Joe", 1),
+                new Enemy(200, 200, "Joe", 1)
+            };
+
+        private List<Projectile> projectiles = new List<Projectile>();
+        
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
-        // Initialisation de l'espace aérien avec un certain nombre de drones
-        public AirSpace(List<Player> players, List<Enemy> enemies)
+        public AirSpace()
         {
             InitializeComponent();
-            // Gets a reference to the current BufferedGraphicsContext
             currentContext = BufferedGraphicsManager.Current;
 
-            
             KeyPreview = true;
             KeyDown += AirspaceKeyDown;
             KeyUp += AirSpaceKeyUp;
-            
 
-            // Creates a BufferedGraphics instance associated with this form, and with
-            // dimensions the same size as the drawing surface of the form.
             airspace = currentContext.Allocate(this.CreateGraphics(), this.DisplayRectangle);
-
-            this.players = players;
-            this.enemies = enemies;
         }
 
-
-        // Affichage de la situation actuelle
         private void Render()
         {
             airspace.Graphics.Clear(Color.White);
 
-            // draw drones
+            // render players (green squares)
             foreach (Player player in players)
             {
                 player.Render(airspace);
             }
+
+            // render enemies (red squares)
             foreach (Enemy enemy in enemies)
             {
                 enemy.Render(airspace);
             }
 
+            // render projectiles (small blue squares)
+            foreach (Projectile proj in projectiles)
+            {
+                proj.Render(airspace);
+            }
 
             airspace.Render();
         }
 
-        // Calcul du nouvel état après que 'interval' millisecondes se sont écoulées
         private void Update(int interval)
         {
             foreach (Player player in players)
@@ -67,10 +68,24 @@ namespace Shootthemup
             foreach (Enemy enemy in enemies)
             {
                 enemy.Update(interval, enemies);
+
+                Projectile newProj = enemy.TryShoot(interval);
+                if (newProj != null)
+                {
+                    projectiles.Add(newProj);
+                }
+            }
+
+            for (int i = projectiles.Count - 1; i >= 0; i--)
+            {
+                projectiles[i].Update();
+                if (projectiles[i].Y > HEIGHT || projectiles[i].Y < 0)
+                {
+                    projectiles.RemoveAt(i);
+                }
             }
         }
 
-        // Méthode appelée à chaque frame
         private void NewFrame(object sender, EventArgs e)
         {
             Update(ticker.Interval);

@@ -4,11 +4,11 @@ namespace Shootthemup //View.Projectiles.cs
 {
     public partial class Projectile
     {
-        // De manière graphique
+        // De manière graphique : petit carré bleu
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.DrawImage(Resources.enemy, X, Y);
-
+            const int size = 6;
+            drawingSpace.Graphics.FillRectangle(Brushes.Blue, X, Y, size, size);
         }
     }
 }

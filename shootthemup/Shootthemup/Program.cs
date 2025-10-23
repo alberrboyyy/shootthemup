@@ -11,19 +11,7 @@ namespace Shootthemup //Program.cs
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
-
-            // Création de la flotte de drones
-            List<Player> players = new List<Player>();
-            players.Add(new Player(1, "Joe", 1));
-
-
-            List<Enemy> enemies = new List<Enemy>();
-            enemies.Add(new Enemy(100, 200, "Joe", 1));
-            enemies.Add(new Enemy(200, 200, "Joe", 1));
-
-
-            // Démarrage
-            Application.Run(new AirSpace(players, enemies));
+            Application.Run(new AirSpace());
         }
     }
 }

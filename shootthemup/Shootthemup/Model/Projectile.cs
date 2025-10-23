@@ -27,7 +27,7 @@
 
         public void Update()
         {
-            this.Y--;
+            this.Y += this.Speed;
         }
     }
 }
