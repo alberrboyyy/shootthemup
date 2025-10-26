@@ -17,8 +17,12 @@ namespace Shootthemup
                 new Enemy(200, 200, "Joe", 1)
             };
 
-        private List<Projectile> projectiles = new List<Projectile>();
-        
+        List<Projectile> projectiles = new List<Projectile>()
+        {
+            new Projectile(100, 500, 1, 3, 2)
+
+        };
+
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
 
@@ -36,8 +40,8 @@ namespace Shootthemup
 
         private void Render()
         {
-            airspace.Graphics.Clear(Color.White);
-
+            airspace.Graphics.Clear(Color.Black);
+            
             // render players (green squares)
             foreach (Player player in players)
             {
@@ -64,15 +68,21 @@ namespace Shootthemup
             foreach (Player player in players)
             {
                 player.Update(interval, players);
+
+                Projectile newProj = player.TryShoot(ticker.Interval);
+                if (newProj != null)
+                {
+                    projectiles.Add(newProj);
+                }
             }
             foreach (Enemy enemy in enemies)
             {
                 enemy.Update(interval, enemies);
 
-                Projectile newProj = enemy.TryShoot(interval);
-                if (newProj != null)
+                Projectile enemyProj = enemy.TryShoot(interval);
+                if (enemyProj != null)
                 {
-                    projectiles.Add(newProj);
+                    projectiles.Add(enemyProj);
                 }
             }
 
@@ -96,10 +106,10 @@ namespace Shootthemup
         {
             switch (e.KeyCode)
             {
-                case Keys.H:
+                case Keys.A:
                     players[0].Direction = -2;
                     break;
-                case Keys.L:
+                case Keys.D:
                     players[0].Direction = 2;
                     break;
                 case Keys.Q:
@@ -112,8 +122,8 @@ namespace Shootthemup
         {
             switch (e.KeyCode)
             {
-                case Keys.H:
-                case Keys.L:
+                case Keys.A:
+                case Keys.D:
                     players[0].Direction = 0;
                     break;
             }

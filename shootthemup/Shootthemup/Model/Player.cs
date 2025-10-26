@@ -8,7 +8,7 @@
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
         private int _direction = 0;
-
+        private int _shootCooldown;                     // shoot cooldown (ms)
 
         // Constructeur
         public Player(int x, string name, int health)
@@ -17,6 +17,8 @@
             _y = AirSpace.HEIGHT - 100;
             _name = name;
             _health = health;
+
+            _shootCooldown = 0;
         }
 
         public int Health { get { return _health; } set { _health = value; } }
@@ -36,16 +38,34 @@
         {
             if (_direction != 0)
             {
-                this.X += _direction;
+                _x += _direction;
             }
-            if (this.X >= AirSpace.WIDTH)
+            if (_x >= AirSpace.WIDTH)
             {
-                this.X = 0;
+                _x = 0;
             }
-            else if (this.X <= 0)
+            else if (_x <= 0)
             {
-                this.X = AirSpace.WIDTH;
+                _x = AirSpace.WIDTH;
             }
         }
+        public Projectile TryShoot(int interval)
+        {
+            _shootCooldown -= interval;
+            if (_shootCooldown <= 0)
+            {
+                _shootCooldown = 100;
+
+                const int playerWidthHalf = 8;
+                const int projectileWidthHalf = 3;
+
+                int projX = _x + playerWidthHalf - projectileWidthHalf;
+
+                // damage=1, speed=3 (positive -> down), projectileType=2
+                return new Projectile(projX, _y, 1, 3, 2);
+            }
+            return null;
+        }
+
     }
 }

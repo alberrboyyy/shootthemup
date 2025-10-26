@@ -2,8 +2,8 @@
 {
     public partial class Projectile
     {
-        private int _x;                                 // Position en X depuis la gauche de l'espace aérien
-        private int _y;                                 // Position en Y depuis le haut de l'espace aérien
+        private int _x;
+        private int _y;
         private int _damage;
         private int _speed;
         private int _projectileType;
@@ -27,7 +27,14 @@
 
         public void Update()
         {
-            this.Y += this.Speed;
+            if (_projectileType == 1)
+            {
+                _y += _speed;
+            }
+            if (_projectileType == 2)
+            {
+                _y -= _speed;
+            }
         }
     }
 }

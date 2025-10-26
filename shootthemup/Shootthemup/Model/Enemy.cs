@@ -27,11 +27,11 @@
 
         public void Update(int interval, List<Enemy> enemies)
         {
-            if (this.Y >= AirSpace.HEIGHT)
+            if (_y >= AirSpace.HEIGHT)
             {
-                this.Y = 0;
+                _y = 0;
             }
-            this.Y++;
+            _y++;
         }
 
         public Projectile TryShoot(int interval)
@@ -41,12 +41,12 @@
             {
                 _shootCooldown = 1000 + GlobalHelpers.alea.Next(0, 1000);
 
-                const int enemyWidthHalf = 16;
+                const int enemyWidthHalf = 8;
                 const int enemyHeight = 32;
                 const int projectileWidthHalf = 3;
 
-                int projX = this.X + enemyWidthHalf - projectileWidthHalf;
-                int projY = this.Y + enemyHeight;
+                int projX = _x + enemyWidthHalf - projectileWidthHalf;
+                int projY = _y + enemyHeight;
 
                 // damage=1, speed=3 (positive -> down), projectileType=1
                 return new Projectile(projX, projY, 1, 3, 1);
