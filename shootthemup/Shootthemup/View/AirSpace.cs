@@ -5,19 +5,18 @@ namespace Shootthemup
         public static readonly int WIDTH = 1200;
         public static readonly int HEIGHT = 600;
 
-        List<Player> players = new List<Player>
-            {
-                new Player(1, "Joe", 1)
-            };
+        private Player _player = new Player(0, 3);
 
 
-        List<Enemy> enemies = new List<Enemy>
-            {
-                new Enemy(100, 200, "Joe", 1),
-                new Enemy(200, 200, "Joe", 1)
-            };
-
-        List<Projectile> projectiles = new List<Projectile>()
+        List<Enemy> enemies = new List<Enemy>()
+        {
+            new Enemy(100, 50, "Enemy1", 3),
+            new Enemy(300, 150, "Enemy2", 3),
+            new Enemy(500, 100, "Enemy3", 3),
+            new Enemy(700, 200, "Enemy4", 3),
+            new Enemy(900, 75, "Enemy5", 3)
+        };
+    List<Projectile> projectiles = new List<Projectile>()
         {
             new Projectile(100, 500, 1, 3, 2)
 
@@ -43,10 +42,8 @@ namespace Shootthemup
             airspace.Graphics.Clear(Color.Black);
             
             // render players (green squares)
-            foreach (Player player in players)
-            {
-                player.Render(airspace);
-            }
+            _player.Render(airspace);
+            
 
             // render enemies (red squares)
             foreach (Enemy enemy in enemies)
@@ -65,16 +62,8 @@ namespace Shootthemup
 
         private void Update(int interval)
         {
-            foreach (Player player in players)
-            {
-                player.Update(interval, players);
+            _player.Update(interval);
 
-                Projectile newProj = player.TryShoot(ticker.Interval);
-                if (newProj != null)
-                {
-                    projectiles.Add(newProj);
-                }
-            }
             foreach (Enemy enemy in enemies)
             {
                 enemy.Update(interval, enemies);
@@ -98,6 +87,7 @@ namespace Shootthemup
 
         private void NewFrame(object sender, EventArgs e)
         {
+            ticker.Interval = 10;
             Update(ticker.Interval);
             Render();
         }
@@ -107,10 +97,10 @@ namespace Shootthemup
             switch (e.KeyCode)
             {
                 case Keys.A:
-                    players[0].Direction = -2;
+                    _player.Direction = -2;
                     break;
                 case Keys.D:
-                    players[0].Direction = 2;
+                    _player.Direction = 2;
                     break;
                 case Keys.Q:
                 case Keys.Escape:
@@ -124,7 +114,7 @@ namespace Shootthemup
             {
                 case Keys.A:
                 case Keys.D:
-                    players[0].Direction = 0;
+                    _player.Direction = 0;
                     break;
             }
         }

@@ -35,7 +35,6 @@
             // ticker
             // 
             ticker.Enabled = true;
-            ticker.Interval = 10;
             ticker.Tick += NewFrame;
             // 
             // AirSpace

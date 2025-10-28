@@ -14,10 +14,11 @@ namespace Shootthemup
         }
 
         // De manière textuelle
+        /*
         public override string ToString()
         {
             return $"{Name} ({((int)((double)Health)).ToString()})";
         }
-
+        */
     }
 }
