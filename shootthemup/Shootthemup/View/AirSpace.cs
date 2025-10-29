@@ -1,4 +1,4 @@
-namespace Shootthemup
+namespace Shootthemup //View.AirSpace.cs
 {
     public partial class AirSpace : Form
     {
@@ -8,19 +8,7 @@ namespace Shootthemup
         private Player _player = new Player(0, 3);
 
 
-        List<Enemy> enemies = new List<Enemy>()
-        {
-            new Enemy(100, 50, "Enemy1", 3),
-            new Enemy(300, 150, "Enemy2", 3),
-            new Enemy(500, 100, "Enemy3", 3),
-            new Enemy(700, 200, "Enemy4", 3),
-            new Enemy(900, 75, "Enemy5", 3)
-        };
-    List<Projectile> projectiles = new List<Projectile>()
-        {
-            new Projectile(100, 500, 1, 3, 2)
-
-        };
+        
 
         BufferedGraphicsContext currentContext;
         BufferedGraphics airspace;
@@ -46,15 +34,15 @@ namespace Shootthemup
             
 
             // render enemies (red squares)
-            foreach (Enemy enemy in enemies)
+            foreach (Enemy enemy in Enemy.Enemies)
             {
                 enemy.Render(airspace);
             }
 
             // render projectiles (small blue squares)
-            foreach (Projectile proj in projectiles)
+            foreach (Projectile projectile in Projectile.Projectiles.ToList())
             {
-                proj.Render(airspace);
+                projectile.Render(airspace);
             }
 
             airspace.Render();
@@ -64,24 +52,14 @@ namespace Shootthemup
         {
             _player.Update(interval);
 
-            foreach (Enemy enemy in enemies)
+            foreach (Enemy enemy in Enemy.Enemies)
             {
-                enemy.Update(interval, enemies);
-
-                Projectile enemyProj = enemy.TryShoot(interval);
-                if (enemyProj != null)
-                {
-                    projectiles.Add(enemyProj);
-                }
+                enemy.Update(interval, Enemy.Enemies);
             }
 
-            for (int i = projectiles.Count - 1; i >= 0; i--)
+            foreach (Projectile projectile in Projectile.Projectiles.ToList())
             {
-                projectiles[i].Update();
-                if (projectiles[i].Y > HEIGHT || projectiles[i].Y < 0)
-                {
-                    projectiles.RemoveAt(i);
-                }
+                projectile.Update(interval, Enemy.Enemies);
             }
         }
 

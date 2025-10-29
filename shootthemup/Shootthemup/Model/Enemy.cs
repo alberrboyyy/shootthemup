@@ -1,4 +1,7 @@
-﻿namespace Shootthemup //Model.Enemy.cs
+﻿using Shootthemup;
+using System;
+
+namespace Shootthemup //Model.Enemy.cs
 {
     public partial class Enemy
     {
@@ -7,8 +10,19 @@
         private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
-        private int _shootCooldown;                     // shoot cooldown (ms)          
-        
+        private int _shootCooldown;                     // shoot cooldown (ms)
+
+
+        public static List<Enemy> Enemies { get; } = new List<Enemy>()
+        {
+            new Enemy(100, 50, "Enemy1", 3),
+            new Enemy(300, 150, "Enemy2", 3),
+            new Enemy(500, 100, "Enemy3", 3),
+            new Enemy(700, 200, "Enemy4", 3),
+            new Enemy(900, 75, "Enemy5", 3)
+        };
+
+
         // Constructeur
         public Enemy(int x, int y, string name, int health)
         {
@@ -34,7 +48,8 @@
             _y++;
         }
 
-        public Projectile TryShoot(int interval)
+        /*
+        public void TryShoot(int interval)
         {
             _shootCooldown -= interval;
             if (_shootCooldown <= 0)
@@ -49,9 +64,9 @@
                 int projY = _y + enemyHeight;
 
                 // damage=1, speed=3 (positive -> down), projectileType=1
-                return new Projectile(projX, projY, 1, 3, 1);
+                Projectile.Projectiles.Add(projX, _y, 1, 3, 2);
             }
-            return null;
-        }
+        }*/
     }
 }
+

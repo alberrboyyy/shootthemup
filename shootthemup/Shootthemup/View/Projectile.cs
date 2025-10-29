@@ -8,7 +8,7 @@ namespace Shootthemup //View.Projectiles.cs
         public void Render(BufferedGraphics drawingSpace)
         {
             const int size = 6;
-            drawingSpace.Graphics.FillRectangle(Brushes.Blue, X, Y, size, size);
+            drawingSpace.Graphics.FillRectangle(Brushes.Blue, _x, _y, size, size);
         }
     }
 }
