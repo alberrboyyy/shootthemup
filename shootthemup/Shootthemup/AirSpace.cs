@@ -72,8 +72,49 @@ namespace Shootthemup //Shootthemup.Form.cs
             for (int i = _projectiles.Count - 1; i >= 0; i--)
             {
                 Projectile projectile = _projectiles[i];
+                bool projectileHit = false;
                 projectile.Update();
-                if (projectile.Y > Config.HEIGHT || projectile.Y < 0)
+
+                if (projectile.Type == ProjectileType.Player)
+                {
+                    for (int j = _enemies.Count - 1; j >= 0; j--)
+                    {
+                        Enemy enemy = _enemies[j];
+
+                        if (projectile.BoundingBox.IntersectsWith(enemy.BoundingBox))
+                        {
+                            projectileHit = true;
+                            enemy.Health -= projectile.Damage;
+
+                            if (enemy.Health <= 0)
+                            {
+                                _enemies.RemoveAt(j);
+                                enemy.Count--;
+                            }
+                            break;
+                        }
+                    }
+                }
+                else if (projectile.Type == ProjectileType.Enemy)
+                {
+                    foreach (Player player in _player)
+                    {
+                        if (projectile.BoundingBox.IntersectsWith(player.BoundingBox))
+                        {
+                            projectileHit = true;
+                            player.Health -= projectile.Damage;
+                            if (player.Health <= 0)
+                            {
+                                // Game Over
+                                ticker.Stop();
+                            }
+
+
+                            break;
+                        }
+                    }
+                }
+                if (projectileHit || projectile.Y > Config.HEIGHT || projectile.Y < 0)
                 {
                     _projectiles.RemoveAt(i);
                 }

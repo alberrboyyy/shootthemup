@@ -13,6 +13,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
         private int _sizeX = 16;
         private int _sizeY = 32;
+        private int _count;
         private int _shootCooldown;                     // shoot cooldown (ms)
 
         public Rectangle BoundingBox
@@ -37,6 +38,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         public string Name { get { return _name; } set { _name = value; } }
         public int X { get { return _x; } set { _x = value; } }
         public int Y { get { return _y; } set { _y = value; } }
+        public int Count { get { return _count; } set { _count = value; } }
 
         public void Update(int interval)
         {
