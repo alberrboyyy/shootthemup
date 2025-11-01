@@ -13,8 +13,12 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
         private int _sizeX = 16;
         private int _sizeY = 32;
+        private int _size = 40;
         private int _count;
         private int _shootCooldown;                     // shoot cooldown (ms)
+        private double _shieldAngle = 0;
+        private const float _coreSize = 16;
+        private const float shieldRadius = 4;
 
         public Rectangle BoundingBox
         {
@@ -47,6 +51,10 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
                 _y = 0;
             }
             _y++;
+
+            double rotationSpeed = 1.0;
+            double deltaTime = 0.01;
+            _shieldAngle += rotationSpeed * deltaTime;
         }
 
         public Projectile TryShoot(int interval)
@@ -60,7 +68,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
                 const int enemyHeight = 32;
                 const int projectileWidthHalf = 3;
 
-                int projX = _x + enemyWidthHalf - projectileWidthHalf;
+                int projX = _x + _sizeX;
                 int projY = _y + enemyHeight;
 
                 return new Projectile(projX, projY, 1, 3, ProjectileType.Enemy);
@@ -71,7 +79,41 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
 
         public void Render(BufferedGraphics drawingSpace)
         {
-            drawingSpace.Graphics.FillRectangle(Brushes.Red, _x, _y, _sizeX, _sizeY);
+            float centerX = _x + (_size / 2);
+            float centerY = _y + (_size / 2);
+            float orbitRadius = _size / 2;
+
+            float coreRadius = _coreSize / 2;
+
+            drawingSpace.Graphics.FillEllipse(Brushes.Red,
+                centerX - coreRadius,
+                centerY - coreRadius,
+                coreRadius * 2,
+                coreRadius * 2);
+
+            if (_health > 1)
+            {
+                int numShields = _health - 1;
+
+                float angleIncrement = (float)(2 * Math.PI / numShields);
+
+                for (int i = 0; i < numShields; i++)
+                {
+                    float angle = i * angleIncrement + (float)_shieldAngle;
+
+                    float shieldCenterX = centerX + (float)(orbitRadius * Math.Cos(angle));
+                    float shieldCenterY = centerY + (float)(orbitRadius * Math.Sin(angle));
+
+                    float shieldDrawX = shieldCenterX - shieldRadius;
+                    float shieldDrawY = shieldCenterY - shieldRadius;
+
+                    drawingSpace.Graphics.FillEllipse(Brushes.Aqua,
+                        shieldDrawX,
+                        shieldDrawY,
+                        shieldRadius * 2,
+                        shieldRadius * 2);
+                }
+            }
         }
     }
 }

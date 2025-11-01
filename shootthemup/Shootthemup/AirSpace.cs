@@ -7,13 +7,13 @@ namespace Shootthemup //Shootthemup.Form.cs
 
         private List<Player> _player = new List<Player>()
         {
-            new Player(0, 3)
+            new Player(1, 10)
         };
 
         private List<Enemy> _enemies = new List<Enemy>()
         {
-            new Enemy(100, 100, 3),
-            new Enemy(200, 100, 3),
+            new Enemy(100, 100, 10),
+            new Enemy(200, 100, 100),
             new Enemy(300, 100, 3),
             new Enemy(400, 100, 3),
             new Enemy(500, 100, 3)
@@ -46,10 +46,9 @@ namespace Shootthemup //Shootthemup.Form.cs
 
             foreach (Player player in _player)
             {
-                player.Update();
+                player.Update(interval);
                 if (player.IsShooting)
                 {
-                    // On essaie de tirer (en respectant le cooldown)
                     Projectile newProj = player.TryShoot(interval);
                     if (newProj != null)
                     {
@@ -105,7 +104,6 @@ namespace Shootthemup //Shootthemup.Form.cs
                             player.Health -= projectile.Damage;
                             if (player.Health <= 0)
                             {
-                                // Game Over
                                 ticker.Stop();
                             }
 
