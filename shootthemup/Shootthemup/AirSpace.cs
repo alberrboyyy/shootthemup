@@ -80,7 +80,15 @@ namespace Shootthemup //Shootthemup.Form.cs
                     {
                         Enemy enemy = _enemies[j];
 
-                        if (projectile.BoundingBox.IntersectsWith(enemy.BoundingBox))
+
+                        double dx = projectile.CenterX - enemy.CenterX;
+                        double dy = projectile.CenterY - enemy.CenterY;
+                        double distanceSquared = (dx * dx) + (dy * dy);
+
+                        double radiusSum = projectile.Radius + enemy.Radius;
+                        double radiusSumSquared = radiusSum * radiusSum;
+
+                        if (distanceSquared < radiusSumSquared)
                         {
                             projectileHit = true;
                             enemy.Health -= projectile.Damage;
@@ -88,8 +96,8 @@ namespace Shootthemup //Shootthemup.Form.cs
                             if (enemy.Health <= 0)
                             {
                                 _enemies.RemoveAt(j);
-                                enemy.Count--;
                             }
+
                             break;
                         }
                     }
@@ -98,15 +106,22 @@ namespace Shootthemup //Shootthemup.Form.cs
                 {
                     foreach (Player player in _player)
                     {
-                        if (projectile.BoundingBox.IntersectsWith(player.BoundingBox))
+                        double dx = projectile.CenterX - player.CenterX;
+                        double dy = projectile.CenterY - player.CenterY;
+                        double distanceSquared = (dx * dx) + (dy * dy);
+
+                        double radiusSum = projectile.Radius + player.Radius;
+                        double radiusSumSquared = radiusSum * radiusSum;
+
+                        if (distanceSquared < radiusSumSquared)
                         {
                             projectileHit = true;
                             player.Health -= projectile.Damage;
+
                             if (player.Health <= 0)
                             {
                                 ticker.Stop();
                             }
-
 
                             break;
                         }

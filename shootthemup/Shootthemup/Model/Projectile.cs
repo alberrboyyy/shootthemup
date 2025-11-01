@@ -6,6 +6,7 @@
         private int _y;
         private int _sizeX = 6;
         private int _sizeY = 6;
+        private int _size = 6;
         private int _damage;
         private int _speed;
         private ProjectileType _type;
@@ -32,6 +33,21 @@
         public int Damage { get { return _damage; } set { _damage = value; } }
         public int Speed { get { return _speed; } set { _speed = value; } }
         public ProjectileType Type { get { return _type; } set { _type = value; } }
+
+        public double CenterX
+        {
+            get { return _x + (_size / 2.0); }
+        }
+
+        public double CenterY
+        {
+            get { return _y + (_size / 2.0); }
+        }
+
+        public double Radius
+        {
+            get { return _size / 2.0; }
+        }
 
 
         public void Update()

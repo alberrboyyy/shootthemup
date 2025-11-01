@@ -7,8 +7,10 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
     public class Enemy
     {
         public static readonly int MaxHealth = 3;       // Charge maximale de la batterie
+        private float _coreRadius = 8;
+        private const float shieldRadius = 4;
+
         private int _health;                            // La charge actuelle de la batterie
-        private string _name;                           // Un nom
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
         private int _sizeX = 16;
@@ -16,9 +18,14 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         private int _size = 40;
         private int _count;
         private int _shootCooldown;                     // shoot cooldown (ms)
+
+
         private double _shieldAngle = 0;
-        private const float _coreSize = 16;
-        private const float shieldRadius = 4;
+
+        private string _name;                           // Un nom
+
+
+
 
         public Rectangle BoundingBox
         {
@@ -43,6 +50,29 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         public int X { get { return _x; } set { _x = value; } }
         public int Y { get { return _y; } set { _y = value; } }
         public int Count { get { return _count; } set { _count = value; } }
+
+
+        public double CenterX
+        {
+            get { return _x + (_size / 2.0); }
+        }
+
+        public double CenterY
+        {
+            get { return _y + (_size / 2.0); }
+        }
+
+        public double Radius
+        {
+            get
+            {
+                if (_health > 1)
+                    return _size / 2.0;
+
+                return _coreRadius;
+            }
+        }
+
 
         public void Update(int interval)
         {
@@ -83,13 +113,11 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
             float centerY = _y + (_size / 2);
             float orbitRadius = _size / 2;
 
-            float coreRadius = _coreSize / 2;
-
             drawingSpace.Graphics.FillEllipse(Brushes.Red,
-                centerX - coreRadius,
-                centerY - coreRadius,
-                coreRadius * 2,
-                coreRadius * 2);
+                centerX - _coreRadius,
+                centerY - _coreRadius,
+                _coreRadius * 2,
+                _coreRadius * 2);
 
             if (_health > 1)
             {

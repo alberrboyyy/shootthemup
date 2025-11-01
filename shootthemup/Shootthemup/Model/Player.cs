@@ -3,6 +3,8 @@
     public class Player
     {
         public static readonly int MaxHealth = 3;      // Charge maximale de la batterie
+        private const float _coreRadius = 8;
+        private const float shieldRadius = 4;
         private int _health;                            // La charge actuelle de la batterie
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
         private int _y;                                 // Position en Y depuis le haut de l'espace aérien
@@ -14,8 +16,6 @@
         private int _shootCooldown;                     // shoot cooldown (ms)
         private bool _isShooting;
         private double _shieldAngle = 0;
-        private const float _coreSize = 16;
-        private const float shieldRadius = 4;
 
         public Rectangle BoundingBox
         {
@@ -36,6 +36,29 @@
         public int Y { get { return _y; } set { _y = value; } }
         public int Direction { get { return _direction; } set { _direction = value; } }
         public bool IsShooting { get { return _isShooting; } set { _isShooting = value; } }
+
+
+        public double CenterX
+        {
+            get { return _x + (_size / 2.0); }
+        }
+
+        public double CenterY
+        {
+            get { return _y + (_size / 2.0); }
+        }
+
+        public double Radius
+        {
+            get
+            {
+                if (_health > 1)
+                    return _size / 2.0;
+
+                return _coreRadius;
+            }
+        }
+
 
 
         public void Update(int interval)
@@ -83,13 +106,11 @@
             float centerY = (float)_y + (_size / 2);
             float orbitRadius = _size / 2;
             
-            float coreRadius = _coreSize / 2;
-
             drawingSpace.Graphics.FillEllipse(Brushes.Green,
-                centerX - coreRadius,
-                centerY - coreRadius,
-                coreRadius * 2,
-                coreRadius * 2);
+                centerX - _coreRadius,
+                centerY - _coreRadius,
+                _coreRadius * 2,
+                _coreRadius * 2);
 
             if (_health > 1)
             {
