@@ -25,7 +25,7 @@ namespace Shootthemup //Shootthemup.Config.cs
         public static readonly int HEIGHT = 600;
 
         // Seed pour la génération aléatoire
-        public static int GameSeed = 12344;
+        public static int GameSeed = 67;
 
         // Générateur de nombres aléatoires
         public static Random alea = new Random(GameSeed);

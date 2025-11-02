@@ -48,7 +48,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         {
             int oldY = _y;                                  // Sauvegarde de l'ancienne position Y
             double rotationSpeed = 1.0;                     // Vitesse de rotation des boucliers (radians par seconde)
-            double deltaTime = interval / 1000;             // Conversion de l'intervalle en secondes
+            double deltaTime = interval / 1000.0;           // Conversion de l'intervalle en secondes
             _shieldAngle += rotationSpeed * deltaTime;      // Mise à jour de l'angle des boucliers
 
             // Met à jour la position en fonction de la vitesse
