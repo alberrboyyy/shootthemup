@@ -56,16 +56,45 @@
 
 
 
-        public void Update(int interval)
+        public void Update(int interval, List<Obstacle> obstacles)
         {
+            int oldX = _x;
+
             if (_direction != 0)
             {
                 _x += _direction;
             }
+
+            if (_x >= Config.WIDTH) { _x = 0; }
+            else if (_x <= 0) { _x = Config.WIDTH; }
+
+            bool isColliding = false;
+            foreach (Obstacle obstacle in obstacles)
+            {
+                double dx = this.CenterX - obstacle.CenterX;
+                double dy = this.CenterY - obstacle.CenterY;
+                double dc = (dx * dx) + (dy * dy);
+
+                double d = this.Radius + obstacle.Size;
+                double dMin = d * d;
+
+                if (dc < dMin)
+                {
+                    isColliding = true;
+                    break;
+                }
+            }
+
+            if (isColliding)
+            {
+                _x = oldX;
+            }
+
             if (_x >= Config.WIDTH)
             {
                 _x = 0;
             }
+
             else if (_x <= 0)
             {
                 _x = Config.WIDTH;

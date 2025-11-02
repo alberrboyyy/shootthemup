@@ -95,7 +95,7 @@ namespace Shootthemup //Shootthemup.Form.cs
         {
             foreach (Player player in _player)
             {
-                player.Update(interval);
+                player.Update(interval, _obstacles);
                 if (player.IsShooting)
                 {
                     Projectile newProj = player.TryShoot(interval);
@@ -108,7 +108,7 @@ namespace Shootthemup //Shootthemup.Form.cs
 
             foreach (Enemy enemy in _enemies)
             {
-                enemy.Update(interval);
+                enemy.Update(interval, _obstacles);
 
                 Projectile newProj = enemy.TryShoot(interval);
                 if (newProj != null)
@@ -122,6 +122,30 @@ namespace Shootthemup //Shootthemup.Form.cs
                 Projectile projectile = _projectiles[i];
                 bool projectileHit = false;
                 projectile.Update();
+
+                for (int k = _obstacles.Count - 1; k >= 0; k--)
+                {
+                    Obstacle obstacle = _obstacles[k];
+
+                    double dx = projectile.CenterX - obstacle.CenterX;
+                    double dy = projectile.CenterY - obstacle.CenterY;
+                    double dc = (dx * dx) + (dy * dy);
+
+                    double d = projectile.Radius + obstacle.Size;
+                    double dMin = d * d;
+
+                    if (dc < dMin)
+                    {
+                        projectileHit = true;
+                        obstacle.Health -= projectile.Damage;
+
+                        if (obstacle.Health <= 0)
+                        {
+                            _obstacles.RemoveAt(k);
+                        }
+                        break;
+                    }
+                }
 
                 if (projectile.Type == ProjectileType.Player)
                 {

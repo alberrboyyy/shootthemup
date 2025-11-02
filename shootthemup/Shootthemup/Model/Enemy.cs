@@ -65,13 +65,36 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         }
 
 
-        public void Update(int interval)
+        public void Update(int interval, List<Obstacle> obstacles)
         {
+            int oldY = _y;
+
             if (_y >= Config.HEIGHT)
             {
                 _y = 0;
             }
             _y++;
+
+            bool isColliding = false;
+            foreach (Obstacle obstacle in obstacles)
+            {
+                double dx = this.CenterX - obstacle.CenterX;
+                double dy = this.CenterY - obstacle.CenterY;
+                double dc = (dx * dx) + (dy * dy);
+
+                double d = this.Radius + obstacle.Size;
+                double dMin = d * d;
+
+                if (dc < dMin)
+                {
+                    isColliding = true;
+                    break;
+                }
+            }
+            if (isColliding)
+            {
+                _y = oldY;
+            }
 
             double rotationSpeed = 1.0;
             double deltaTime = 0.01;
@@ -86,7 +109,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
                 _shootCooldown = 1000 + Config.alea.Next(0, 1000);
 
                 int projX = _x + _size / 2 - Projectile.Size / 2;
-                int projY = _y + _size;
+                int projY = _y + + _size / 2 + (int)_coreRadius / 2;
 
                 return new Projectile(projX, projY, 1, 3, ProjectileType.Enemy);
             }
