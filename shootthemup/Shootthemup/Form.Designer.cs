@@ -1,6 +1,6 @@
 ﻿namespace Shootthemup
 {
-    partial class AirSpace
+    partial class Form
     {
         /// <summary>
         ///  Required designer variable.

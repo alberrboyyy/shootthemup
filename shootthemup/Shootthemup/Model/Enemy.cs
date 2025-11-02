@@ -7,7 +7,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
     public class Enemy
     {
         public static readonly int MaxHealth = 3;       // Charge maximale de la batterie
-        private float _coreRadius = 8;
+        private const float _coreRadius = 8;
         private const float shieldRadius = 4;
 
         private int _health;                            // La charge actuelle de la batterie
@@ -19,21 +19,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         private int _count;
         private int _shootCooldown;                     // shoot cooldown (ms)
 
-
         private double _shieldAngle = 0;
-
-        private string _name;                           // Un nom
-
-
-
-
-        public Rectangle BoundingBox
-        {
-            get { return new Rectangle(_x, _y, _sizeX, _sizeY); }
-        }
-
-
-
 
         // Constructeur
         public Enemy(int x, int y, int health)
@@ -46,10 +32,15 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         }
 
         public int Health { get { return _health; } set { _health = value; } }
-        public string Name { get { return _name; } set { _name = value; } }
         public int X { get { return _x; } set { _x = value; } }
         public int Y { get { return _y; } set { _y = value; } }
         public int Count { get { return _count; } set { _count = value; } }
+        public static int Score { 
+            get 
+            {
+                return 100;
+            }
+        }
 
 
         public double CenterX
@@ -94,12 +85,8 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
             {
                 _shootCooldown = 1000 + Config.alea.Next(0, 1000);
 
-                const int enemyWidthHalf = 8;
-                const int enemyHeight = 32;
-                const int projectileWidthHalf = 3;
-
-                int projX = _x + _sizeX;
-                int projY = _y + enemyHeight;
+                int projX = _x + _size / 2 - Projectile.Size / 2;
+                int projY = _y + _size;
 
                 return new Projectile(projX, projY, 1, 3, ProjectileType.Enemy);
             }

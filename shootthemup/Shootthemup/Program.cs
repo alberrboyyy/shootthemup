@@ -8,7 +8,7 @@ namespace Shootthemup //Program.cs
         [STAThread]
         static void Main()
         {
-            Application.Run(new AirSpace());
+            Application.Run(new Form());
         }
     }
 }

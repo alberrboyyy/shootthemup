@@ -11,6 +11,15 @@ namespace Shootthemup //Shootthemup.Config.cs
         Enemy,
         Player
     }
+    public enum EnemyType
+    {
+        
+    }
+    public enum SpawnState
+    {
+        Waiting,
+        SpawningWave
+    }
 
     internal class Config
     {
@@ -18,7 +27,7 @@ namespace Shootthemup //Shootthemup.Config.cs
         public static readonly int HEIGHT = 600;
 
 
-        public static Random alea = new Random();
+        public static Random alea = new Random(Form.GameSeed);
 
     }
 }

@@ -3,7 +3,7 @@
     public class Player
     {
         public static readonly int MaxHealth = 3;      // Charge maximale de la batterie
-        private const float _coreRadius = 8;
+        private const int _coreRadius = 8;
         private const float shieldRadius = 4;
         private int _health;                            // La charge actuelle de la batterie
         private int _x;                                 // Position en X depuis la gauche de l'espace aérien
@@ -16,11 +16,6 @@
         private int _shootCooldown;                     // shoot cooldown (ms)
         private bool _isShooting;
         private double _shieldAngle = 0;
-
-        public Rectangle BoundingBox
-        {
-            get { return new Rectangle(_x, _y, _sizeX, _sizeY); }
-        }
 
         public Player(int x, int health)
         {
@@ -88,11 +83,7 @@
             {
                 _shootCooldown = 100;
 
-                const int playerWidthHalf = 8;
-                const int projectileWidthHalf = 3;
-
-                int projX = _x + playerWidthHalf - projectileWidthHalf;
-
+                int projX = _x + _size / 2 - Projectile.Size / 2;
 
                 return new Projectile(projX, _y, 1, 3, ProjectileType.Player);
             }

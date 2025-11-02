@@ -2,20 +2,14 @@
 {
     public class Projectile
     {
+        private static int _size = 6;
         private int _x;
         private int _y;
         private int _sizeX = 6;
         private int _sizeY = 6;
-        private int _size = 6;
         private int _damage;
         private int _speed;
         private ProjectileType _type;
-
-        public Rectangle BoundingBox
-        {
-            get { return new Rectangle(_x, _y, _sizeX, _sizeY); }
-        }
-
 
 
         // Constructeur
@@ -32,6 +26,7 @@
         public int Y { get { return _y; } set { _y = value; } }
         public int Damage { get { return _damage; } set { _damage = value; } }
         public int Speed { get { return _speed; } set { _speed = value; } }
+        public static int Size { get { return _size; } }
         public ProjectileType Type { get { return _type; } set { _type = value; } }
 
         public double CenterX

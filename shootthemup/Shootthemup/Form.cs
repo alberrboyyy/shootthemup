@@ -2,7 +2,7 @@ using System;
 
 namespace Shootthemup //Shootthemup.Form.cs
 {
-    public partial class AirSpace : System.Windows.Forms.Form
+    public partial class Form : System.Windows.Forms.Form
     {
 
         private List<Player> _player = new List<Player>()
@@ -19,20 +19,70 @@ namespace Shootthemup //Shootthemup.Form.cs
             new Enemy(500, 100, 3)
         };
 
+        private List<Obstacle> _obstacles = new List<Obstacle>();
+
         private List<Projectile> _projectiles = new List<Projectile>();
 
-        private BufferedGraphics _from;
+        private static int _gameSeed = 12344;
 
-        public AirSpace()
+        private int _score = 0;
+        private int _kills = 0;
+
+        private BufferedGraphics _form;
+
+        public static int GameSeed { get { return _gameSeed; } }
+
+        public Form()
         {
             InitializeComponent();
             ticker.Interval = 10;
 
             KeyPreview = true;
-            KeyDown += AirspaceKeyDown;
-            KeyUp += AirSpaceKeyUp;
+            KeyDown += FormKeyDown;
+            KeyUp += FormKeyUp;
 
-            this._from = BufferedGraphicsManager.Current.Allocate(this.CreateGraphics(), this.DisplayRectangle);
+            int numObstacles = Config.alea.Next(5, 9);
+
+            for (int i = 0; i < numObstacles; i++)
+            {
+                bool positionValide = false;
+                Obstacle newObstacle = null;
+
+                while (!positionValide)
+                {
+                    int xPos = Config.alea.Next(100, Config.WIDTH - 100);
+                    int yPos = Config.alea.Next(100, Config.HEIGHT - 150);
+                    int health = Config.alea.Next(5, 10);
+                    int size = Config.alea.Next(20, 40);
+
+                    newObstacle = new Obstacle(xPos, yPos, health, size);
+
+                    positionValide = true;
+                    foreach (Obstacle obstacle in _obstacles)
+                    {
+                        double dx = newObstacle.CenterX - obstacle.CenterX;
+                        double dy = newObstacle.CenterY - obstacle.CenterY;
+                        double dc = (dx * dx) + (dy * dy);
+
+                        double margin = 10.0;
+                        double d = newObstacle.Size + obstacle.Size + margin;
+                        double dMin = d * d;
+
+                        if (dc < dMin)
+                        {
+                            positionValide = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (positionValide)
+                {
+                    _obstacles.Add(newObstacle);
+                }
+            }
+
+            _form = BufferedGraphicsManager.Current.Allocate(this.CreateGraphics(), this.DisplayRectangle);
         }
 
         private void NewFrame(object sender, EventArgs e)
@@ -43,7 +93,6 @@ namespace Shootthemup //Shootthemup.Form.cs
 
         private void Update(int interval)
         {
-
             foreach (Player player in _player)
             {
                 player.Update(interval);
@@ -80,15 +129,14 @@ namespace Shootthemup //Shootthemup.Form.cs
                     {
                         Enemy enemy = _enemies[j];
 
-
                         double dx = projectile.CenterX - enemy.CenterX;
                         double dy = projectile.CenterY - enemy.CenterY;
-                        double distanceSquared = (dx * dx) + (dy * dy);
+                        double dc = (dx * dx) + (dy * dy);
 
-                        double radiusSum = projectile.Radius + enemy.Radius;
-                        double radiusSumSquared = radiusSum * radiusSum;
+                        double d = projectile.Radius + enemy.Radius;
+                        double dMin = d * d;
 
-                        if (distanceSquared < radiusSumSquared)
+                        if (dc < dMin)
                         {
                             projectileHit = true;
                             enemy.Health -= projectile.Damage;
@@ -96,8 +144,9 @@ namespace Shootthemup //Shootthemup.Form.cs
                             if (enemy.Health <= 0)
                             {
                                 _enemies.RemoveAt(j);
+                                _score += Enemy.Score;
+                                _kills++;
                             }
-
                             break;
                         }
                     }
@@ -108,12 +157,12 @@ namespace Shootthemup //Shootthemup.Form.cs
                     {
                         double dx = projectile.CenterX - player.CenterX;
                         double dy = projectile.CenterY - player.CenterY;
-                        double distanceSquared = (dx * dx) + (dy * dy);
+                        double dc = (dx * dx) + (dy * dy);
 
-                        double radiusSum = projectile.Radius + player.Radius;
-                        double radiusSumSquared = radiusSum * radiusSum;
+                        double d = projectile.Radius + player.Radius;
+                        double dMin = d * d;
 
-                        if (distanceSquared < radiusSumSquared)
+                        if (dc < dMin)
                         {
                             projectileHit = true;
                             player.Health -= projectile.Damage;
@@ -136,29 +185,39 @@ namespace Shootthemup //Shootthemup.Form.cs
 
         private void Render()
         {
-            _from.Graphics.Clear(Color.Black);
+            _form.Graphics.Clear(Color.Black);
 
             foreach (Player player in _player)
             {
-                player.Render(_from);
+                player.Render(_form);
             }
 
 
             foreach (Enemy enemy in _enemies.ToList())
             {
-                enemy.Render(_from);
+                enemy.Render(_form);
             }
 
             foreach (Projectile projectile in _projectiles)
             {
-                projectile.Render(_from);
+                projectile.Render(_form);
             }
 
-            _from.Render();
+            foreach (Obstacle obstacle in _obstacles)
+            {
+                obstacle.Render(_form);
+            }
+
+            Font scoreFont = new Font("Arial", 16, FontStyle.Bold);
+            Brush scoreBrush = Brushes.White;
+
+            _form.Graphics.DrawString($"Score: {_score}", scoreFont, scoreBrush, 2, 2);
+            _form.Graphics.DrawString($"Kills: {_kills}", scoreFont, scoreBrush, 2, 24);
+            _form.Render();
         }
 
 
-        private void AirspaceKeyDown(object sender, KeyEventArgs e)
+        private void FormKeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
@@ -186,7 +245,7 @@ namespace Shootthemup //Shootthemup.Form.cs
                     break;
             }
         }
-        private void AirSpaceKeyUp(object sender, KeyEventArgs e)
+        private void FormKeyUp(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
