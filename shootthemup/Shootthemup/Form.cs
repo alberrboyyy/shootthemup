@@ -4,27 +4,21 @@ namespace Shootthemup //Shootthemup.Form.cs
 {
     public partial class Form : System.Windows.Forms.Form
     {
-
         private List<Player> _player = new List<Player>()
         {
             new Player(1, 10)
         };
 
-        private List<Enemy> _enemies = new List<Enemy>()
-        {
-            new Enemy(100, 100, 10),
-            new Enemy(200, 100, 100),
-            new Enemy(300, 100, 3),
-            new Enemy(400, 100, 3),
-            new Enemy(500, 100, 3)
-        };
-
+        private List<Enemy> _enemies = new List<Enemy>();
         private List<Obstacle> _obstacles = new List<Obstacle>();
-
         private List<Projectile> _projectiles = new List<Projectile>();
 
         private int _score = 0;
         private int _kills = 0;
+        private int _waveNumber = 1;
+        private int _maxEnemies = Config.alea.Next(60, 100);
+        private const int _totalWaves = 10;
+        private bool _gameIsWon = false;
 
         private BufferedGraphics _form;
 
@@ -37,46 +31,7 @@ namespace Shootthemup //Shootthemup.Form.cs
             KeyDown += FormKeyDown;
             KeyUp += FormKeyUp;
 
-            int numObstacles = Config.alea.Next(5, 9);
-
-            for (int i = 0; i < numObstacles; i++)
-            {
-                bool positionValide = false;
-                Obstacle newObstacle = null;
-
-                while (!positionValide)
-                {
-                    int xPos = Config.alea.Next(100, Config.WIDTH - 100);
-                    int yPos = Config.alea.Next(100, Config.HEIGHT - 150);
-                    int health = Config.alea.Next(5, 10);
-                    int size = Config.alea.Next(20, 40);
-
-                    newObstacle = new Obstacle(xPos, yPos, health, size);
-
-                    positionValide = true;
-                    foreach (Obstacle obstacle in _obstacles)
-                    {
-                        double dx = newObstacle.CenterX - obstacle.CenterX;
-                        double dy = newObstacle.CenterY - obstacle.CenterY;
-                        double dc = (dx * dx) + (dy * dy);
-
-                        double margin = 10.0;
-                        double d = newObstacle.Size + obstacle.Size + margin;
-                        double dMin = d * d;
-
-                        if (dc < dMin)
-                        {
-                            positionValide = false;
-                            break;
-                        }
-                    }
-                }
-
-                if (positionValide)
-                {
-                    _obstacles.Add(newObstacle);
-                }
-            }
+            GenerateObstacles();
 
             _form = BufferedGraphicsManager.Current.Allocate(this.CreateGraphics(), this.DisplayRectangle);
         }
@@ -89,6 +44,21 @@ namespace Shootthemup //Shootthemup.Form.cs
 
         private void Update(int interval)
         {
+            if (_gameIsWon || !ticker.Enabled) return;
+
+            if (_enemies.Count == 0)
+            {
+                if (_waveNumber >= _totalWaves)
+                {
+                    HandleWin();
+                }
+                else
+                {
+                    _waveNumber++;
+                    GenerateWave();
+                    GenerateObstacles();
+                }
+            }
             foreach (Player player in _player)
             {
                 player.Update(interval, _obstacles);
@@ -164,7 +134,7 @@ namespace Shootthemup //Shootthemup.Form.cs
                             if (enemy.Health <= 0)
                             {
                                 _enemies.RemoveAt(j);
-                                _score += Enemy.Score;
+                                _score += enemy.ScoreValue;
                                 _kills++;
                             }
                             break;
@@ -211,7 +181,6 @@ namespace Shootthemup //Shootthemup.Form.cs
             {
                 player.Render(_form);
             }
-
 
             foreach (Enemy enemy in _enemies.ToList())
             {
@@ -283,6 +252,76 @@ namespace Shootthemup //Shootthemup.Form.cs
                     }
                     break;
             }
+        }
+    
+        private void GenerateObstacles()
+        {
+            int obstacleCount = Config.alea.Next(5, 9);
+
+            for (int i = 0; i < obstacleCount; i++)
+            {
+                bool ValidPos = false;
+                Obstacle newObstacle = null;
+
+                while (!ValidPos)
+                {
+                    int xPos = Config.alea.Next(100, Config.WIDTH - 100);
+                    int yPos = Config.alea.Next(100, Config.HEIGHT - 150);
+                    int health = Config.alea.Next(5, 10);
+                    int size = Config.alea.Next(20, 40);
+
+                    newObstacle = new Obstacle(xPos, yPos, health, size);
+
+                    ValidPos = true;
+                    foreach (Obstacle obstacle in _obstacles)
+                    {
+                        double dx = newObstacle.CenterX - obstacle.CenterX;
+                        double dy = newObstacle.CenterY - obstacle.CenterY;
+                        double dc = (dx * dx) + (dy * dy);
+
+                        double margin = 10.0;
+                        double d = newObstacle.Size + obstacle.Size + margin;
+                        double dMin = d * d;
+
+                        if (dc < dMin)
+                        {
+                            ValidPos = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (ValidPos)
+                {
+                    _obstacles.Add(newObstacle);
+                }
+            }
+        }
+
+        private void GenerateWave()
+        {
+            int remainingBudget = _maxEnemies - _kills;
+            if (remainingBudget <= 0) return;
+
+            int baseWaveSize = Config.alea.Next(5, 10) + _waveNumber;
+            int enemiesToSpawn = Math.Min(baseWaveSize, remainingBudget);
+
+            for (int i = 0; i < enemiesToSpawn; i++)
+            {
+                _enemies.Add(new Enemy());
+            }
+        }
+
+        private void HandleWin()
+        {
+            _gameIsWon = true;
+            ticker.Stop();
+            MessageBox.Show(
+                $"Félicitations !\nVous avez survécu aux {_totalWaves} vagues.\n\nScore final : {_score}",
+                "Victoire !",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
         }
     }
 }

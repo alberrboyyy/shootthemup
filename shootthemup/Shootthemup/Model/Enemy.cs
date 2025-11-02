@@ -19,29 +19,26 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         private int _count;
         private int _shootCooldown;                     // shoot cooldown (ms)
         private int _speed;                             // Vitesse de déplacement de l'ennemi
+        private int _scoreValue;                        // Valeur en points de l'ennemi
 
         private double _shieldAngle = 0;
 
         // Constructeur
-        public Enemy(int x, int y, int health)
+        public Enemy()
         {
             _x = Config.alea.Next(0, Config.WIDTH);
             _y = Config.alea.Next(0 - Config.HEIGHT, 0);
             _health = Config.alea.Next(3, 10);
             _speed = Config.alea.Next(1, 3);
             _shootCooldown = Config.alea.Next(200, 1000);
+            _scoreValue = _health * 50;
         }
 
         public int Health { get { return _health; } set { _health = value; } }
         public int X { get { return _x; } set { _x = value; } }
         public int Y { get { return _y; } set { _y = value; } }
         public int Count { get { return _count; } set { _count = value; } }
-        public static int Score { 
-            get 
-            {
-                return 100;
-            }
-        }
+        public int ScoreValue { get { return _scoreValue; } set { _scoreValue = value; } }
 
 
         public double CenterX
