@@ -58,3 +58,14 @@ Les valeurs possibles du résultat sont: LA (Largement Acquis), A (Acquis), I (I
 | Ecologie (gitignore)       | A        |                                                                                                                                                                                                                                                                                                                                                                                          |
 | Comportement collectif     | I        | il est important que vous réduisiez les interactions non professionnelles avec vos camarades                                                                                                                                                                                                                                                                                             |
 | Comportement individuel    | I        | la prise de pauses prolongées ne me semble pas adéquate. Je n'ai pas l'impression que ces pause vous rendent plus performant par la suite durant les périodes de travail. Surtout si l'on en juge par le retard accumulé                                                                                                                                                                 |
+
+## Final
+
+Le jeu est fonctionnel, complet, agréable à jouer. La livraison est en retard, mais de bonne qualité cette fois.  
+Le rapport est un petit peu court, mais il couvre tous les sujets demandés.  
+Les progrès réalisés dans le code durant les 20 dernières heures de travail sont impressionnants. J'ai la forte impression que l'IA vous a plus aidé que ce que vous dites dans le rapport.  
+Je ne vous en tiendrai pas rigueur, car je vois que vous avez passé une nuit assez intense pour rattraper votre retard.  
+Le résultat étant satisfaisant, je ne vais pas pinailler sur les détails: je valide votre projet. 
+
+Mais je vous invite à bien réfléchir à vos méthodes de travail.  
+Le mode "procrastination" où l'on passe trop de temps à discuter durant les cours et qu'on finit par une nuit de boulot durant un weekend, cela peut fonctionner quelques fois quand on travaille seul, mais cela n'est pas possible dans un travail d'équipe, ou sur le long terme.
