@@ -18,17 +18,18 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
         private int _size = 40;
         private int _count;
         private int _shootCooldown;                     // shoot cooldown (ms)
+        private int _speed;                             // Vitesse de déplacement de l'ennemi
 
         private double _shieldAngle = 0;
 
         // Constructeur
         public Enemy(int x, int y, int health)
         {
-            _x = x;
-            _y = y;
-            _health = health;
-
-            _shootCooldown = Config.alea.Next(500, 2000);
+            _x = Config.alea.Next(0, Config.WIDTH);
+            _y = Config.alea.Next(0 - Config.HEIGHT, 0);
+            _health = Config.alea.Next(3, 10);
+            _speed = Config.alea.Next(1, 3);
+            _shootCooldown = Config.alea.Next(200, 1000);
         }
 
         public int Health { get { return _health; } set { _health = value; } }
@@ -73,7 +74,7 @@ namespace Shootthemup //Shootthemup.Model.Enemy.cs
             {
                 _y = 0;
             }
-            _y++;
+            _y += _speed;
 
             bool isColliding = false;
             foreach (Obstacle obstacle in obstacles)

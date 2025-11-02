@@ -23,14 +23,10 @@ namespace Shootthemup //Shootthemup.Form.cs
 
         private List<Projectile> _projectiles = new List<Projectile>();
 
-        private static int _gameSeed = 12344;
-
         private int _score = 0;
         private int _kills = 0;
 
         private BufferedGraphics _form;
-
-        public static int GameSeed { get { return _gameSeed; } }
 
         public Form()
         {

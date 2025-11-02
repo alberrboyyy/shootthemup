@@ -26,8 +26,10 @@ namespace Shootthemup //Shootthemup.Config.cs
         public static readonly int WIDTH = 1200;
         public static readonly int HEIGHT = 600;
 
+        public static int GameSeed = 12344;
 
-        public static Random alea = new Random(Form.GameSeed);
+
+        public static Random alea = new Random(GameSeed);
 
     }
 }
