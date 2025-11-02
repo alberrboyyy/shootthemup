@@ -8,6 +8,7 @@ namespace Shootthemup //Program.cs
         [STAThread]
         static void Main()
         {
+            // Lance l'application
             Application.Run(new Form());
         }
     }
