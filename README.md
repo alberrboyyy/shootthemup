@@ -5,7 +5,7 @@
 
 ## Introduction
 
-Le projet "Shoot them up" est un jeu vidéo de type arcade qui s'inscrit dans un genre très proche au jeu "space invaders". 
+Le projet "Shoot them up" est un jeu vidéo de type arcade qui s'inscrit dans un genre très proche du jeu "space invaders". 
 Le concept est simple : le joueur contrôle un vaisseau spatial et doit survivre à des vagues successives d'ennemis tout en cherchant à obtenir le meilleur score possible. 
 Ce jeu est développé en C#, en utilisant les principes de POO pour garantir une structure de code claire et évolutive.
 
